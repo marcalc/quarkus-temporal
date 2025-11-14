@@ -25,7 +25,8 @@ public class TestWorkflowRecorder {
     }
 
     /**
-     * Builds the {@link WorkflowClientOptions} used by the mock TestWorkflowEnvironment, while honoring the CDI wiring.
+     * Builds the {@link WorkflowClientOptions} used by the mock TestWorkflowEnvironment.
+     * This honors CDI wiring similarly to the runtime recorder.
      */
     public WorkflowClientOptions createTestWorkflowClientOptions(SyntheticCreationalContext<?> context) {
         return WorkflowClientOptionsSupport.buildFromContext(

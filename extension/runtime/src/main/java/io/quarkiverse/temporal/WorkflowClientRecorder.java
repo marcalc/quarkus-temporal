@@ -5,7 +5,6 @@ import java.util.function.Function;
 import io.quarkiverse.temporal.config.TemporalBuildtimeConfig;
 import io.quarkiverse.temporal.config.TemporalRuntimeConfig;
 import io.quarkus.arc.SyntheticCreationalContext;
-import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.runtime.annotations.Recorder;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowClientOptions;
@@ -22,7 +21,7 @@ public class WorkflowClientRecorder {
     /**
      * The runtime configuration for Temporal.
      */
-    final RuntimeValue<TemporalRuntimeConfig> runtimeConfig;
+    final TemporalRuntimeConfig runtimeConfig;
 
     /**
      * The build-time configuration for Temporal.
@@ -35,7 +34,7 @@ public class WorkflowClientRecorder {
      * @param runtimeConfig The runtime configuration for Temporal.
      * @param buildtimeConfig The build-time configuration for Temporal.
      */
-    public WorkflowClientRecorder(RuntimeValue<TemporalRuntimeConfig> runtimeConfig, TemporalBuildtimeConfig buildtimeConfig) {
+    public WorkflowClientRecorder(TemporalRuntimeConfig runtimeConfig, TemporalBuildtimeConfig buildtimeConfig) {
         this.runtimeConfig = runtimeConfig;
         this.buildtimeConfig = buildtimeConfig;
     }
@@ -49,14 +48,14 @@ public class WorkflowClientRecorder {
     public WorkflowClientOptions createWorkflowClientOptions(
             SyntheticCreationalContext<WorkflowClient> context) {
 
-        if (runtimeConfig == null || runtimeConfig.getValue() == null) {
+        if (runtimeConfig == null) {
             return WorkflowClientOptions.getDefaultInstance();
         }
 
         return WorkflowClientOptionsSupport.buildFromContext(
                 context,
-                runtimeConfig.getValue().namespace(),
-                runtimeConfig.getValue().identity());
+                runtimeConfig.namespace(),
+                runtimeConfig.identity());
     }
 
     /**
